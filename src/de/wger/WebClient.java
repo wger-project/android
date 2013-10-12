@@ -28,7 +28,7 @@ class WgerWebViewClient extends WebViewClient {
     	/*
     	 * Load all external links with the system's browser
     	 */
-        if (Uri.parse(url).getHost().equals("trurl.lem")) {
+        if (Uri.parse(url).getHost().equals("wger.de")) {
             return false;
         }
 
