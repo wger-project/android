@@ -40,6 +40,6 @@ public class MainActivity extends Activity {
 
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        myWebView.loadUrl("https://wger.de");
+        myWebView.loadUrl("https://wger.de/dashboard");
     }
 }
