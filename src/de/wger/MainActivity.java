@@ -17,16 +17,14 @@
 
 package de.wger;
 
-import de.wger.WgerWebViewClient;
-
 import android.app.ActionBar;
-import android.os.Bundle;
 import android.app.Activity;
-import android.webkit.WebView;
+import android.os.Bundle;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
+
 
 public class MainActivity extends Activity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +35,10 @@ public class MainActivity extends Activity {
 
         WebView myWebView = (WebView) findViewById(R.id.webview);
         myWebView.setWebViewClient(new WgerWebViewClient());
+        
+        myWebView.getSettings().setUserAgentString(myWebView.getSettings().getUserAgentString()
+                                                   + " WgerAndroidWebApp");
+        
 
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
