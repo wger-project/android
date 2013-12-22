@@ -18,6 +18,7 @@
 package de.wger;
 
 import android.content.Intent;
+import android.net.MailTo;
 import android.net.Uri;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -25,12 +26,31 @@ import android.webkit.WebViewClient;
 class WgerWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
+    	
+    	/*
+         * Special attention needed for mailto links, should open with
+         * the email app
+         */
+        if(url.startsWith("mailto:")){
+            MailTo mt = MailTo.parse(url);
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{mt.getTo()});
+            i.putExtra(Intent.EXTRA_SUBJECT, mt.getSubject());
+            i.putExtra(Intent.EXTRA_CC, mt.getCc());
+            i.putExtra(Intent.EXTRA_TEXT, mt.getBody());
+            view.getContext().startActivity(i);
+            view.reload();
+            return true;
+        }
+
     	/*
     	 * Load all external links with the system's browser
     	 */
         if (Uri.parse(url).getHost().equals("wger.de")) {
             return false;
         }
+
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         view.getContext().startActivity(intent);
