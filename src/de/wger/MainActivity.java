@@ -35,12 +35,17 @@ public class MainActivity extends Activity {
 
         WebView myWebView = (WebView) findViewById(R.id.webview);
         myWebView.setWebViewClient(new WgerWebViewClient());
+        WebSettings webSettings = myWebView.getSettings();
         
-        myWebView.getSettings().setUserAgentString(myWebView.getSettings().getUserAgentString()
-                                                   + " WgerAndroidWebApp");
+        /*
+         *  Change WebView UserAgent
+         *  
+         *  This is needed for example to hide the persona login button, which does
+         *  not work when called from an app.
+         */
+        webSettings.setUserAgentString(webSettings.getUserAgentString() + " WgerAndroidWebApp");
         
 
-        WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         myWebView.loadUrl("https://wger.de/dashboard");
     }
