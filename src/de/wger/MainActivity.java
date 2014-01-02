@@ -19,12 +19,19 @@ package de.wger;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.DownloadManager;
+import android.app.DownloadManager.Request;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.webkit.CookieManager;
+import android.webkit.DownloadListener;
+import android.webkit.URLUtil;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity {	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +42,34 @@ public class MainActivity extends Activity {
 
         WebView myWebView = (WebView) findViewById(R.id.webview);
         myWebView.setWebViewClient(new WgerWebViewClient());
+        myWebView.setDownloadListener(new DownloadListener() {
+        	
+           /*
+            * Special care for the application downloads
+            * 
+            * This is needed because they are only available to logged in users
+            * and we have to send the authentication cookie and handle the rest
+            */
+            public void onDownloadStart(String url,
+                                        String userAgent,
+                                        String contentDisposition,
+                                        String mimetype,
+                                        long contentLength) {
+                                            String fileName = URLUtil.guessFileName(url, contentDisposition, mimetype);
+                                            String cookie = CookieManager.getInstance().getCookie(url);
+                                            
+                                            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                                            Request request = new Request(Uri.parse(url));
+                                            request.setTitle(fileName);
+                                            request.addRequestHeader("Cookie", cookie);
+                                            dm.enqueue(request);
+
+                                            // Open the download manager
+                                            Intent downloadsIntent = new Intent();
+                                            downloadsIntent.setAction(DownloadManager.ACTION_VIEW_DOWNLOADS);
+                                            startActivity(downloadsIntent);
+                                        }
+            });
         WebSettings webSettings = myWebView.getSettings();
         
         /*
