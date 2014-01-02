@@ -34,7 +34,7 @@ class WgerWebViewClient extends WebViewClient {
         if(url.startsWith("mailto:")){
             MailTo mt = MailTo.parse(url);
             Intent i = new Intent(Intent.ACTION_SEND);
-            i.setType("text/plain");
+            i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{mt.getTo()});
             i.putExtra(Intent.EXTRA_SUBJECT, mt.getSubject());
             i.putExtra(Intent.EXTRA_CC, mt.getCc());
