@@ -15,7 +15,7 @@
  * along with wger Android. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.wger;
+package de.wger.pro;
 
 import android.content.Intent;
 import android.net.MailTo;
