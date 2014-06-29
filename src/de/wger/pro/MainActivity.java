@@ -86,7 +86,34 @@ public class MainActivity extends Activity {
         
 
         webSettings.setJavaScriptEnabled(true);
-        web.loadUrl("https://wger.de/dashboard");
+        
+        // Only load the initial URL on first run, not when the device orientation
+        // changes
+        if (savedInstanceState == null)
+        {
+            web.loadUrl("https://wger.de/dashboard");
+        }
+        
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState )
+    {
+    	/*
+    	 * Save instance state, e.g. when rotating device
+    	 */
+    	super.onSaveInstanceState(outState);
+    	web.saveState(outState);
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+    	/*
+    	 * Restore instance state, e.g. when rotating device
+    	 */
+    	super.onRestoreInstanceState(savedInstanceState);
+    	web.restoreState(savedInstanceState);
     }
     
     
